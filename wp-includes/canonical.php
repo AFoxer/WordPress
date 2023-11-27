@@ -65,11 +65,16 @@ function redirect_canonical( $requested_url = null, $do_redirect = true ) {
 		return;
 	}
 
-	if ( ! $requested_url && isset( $_SERVER['HTTP_HOST'] ) ) {
-		// Build the URL in the address bar.
-		$requested_url  = is_ssl() ? 'https://' : 'http://';
-		$requested_url .= $_SERVER['HTTP_HOST'];
-		$requested_url .= $_SERVER['REQUEST_URI'];
+	if ( ! $requested_url )
+		if (isset( $_SERVER['HTTP_HOST'] ) ) {
+			// Build the URL in the address bar.
+			$requested_url  = is_ssl() ? 'https://' : 'http://';
+			$requested_url .= $_SERVER['HTTP_HOST'];
+			$requested_url .= $_SERVER['REQUEST_URI'];
+		}
+		else {
+			return;
+		}
 	}
 
 	$original = parse_url( $requested_url );
